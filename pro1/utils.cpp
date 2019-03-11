@@ -1,10 +1,11 @@
 #include "utils.h"
+#include <iostream>
 
 inline int abs(int a) { return a > 0 ? a : -a; }
 
 void drawLine(int x1, int y1, int x2, int y2) {
   int dx = x2 - x1, dy = y2 - y1;
-  int ux = dx > 0 ? 1 : -1;
+  int ux = dx > 0 ? 1 : -1, uy = dy > 0 ? 1 : -1;
   int dxAbs = abs(dx), dyAbs = abs(dy);
   int dxAbs2 = dxAbs << 1, dyAbs2 = dyAbs << 1;
   if (dxAbs > dyAbs) {
