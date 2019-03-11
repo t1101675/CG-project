@@ -8,7 +8,12 @@ void display() {
   std::cout << "OK" << std::endl;
   // glVertex2i(700, 15);
   // glVertex2i(100, 555);
-  drawLine(10, 10, 500, 300);
+  drawLine(10, 10, 200, 100);
+  // drawLine(10, 10, 200, 400);
+  // drawLine(10, 10, -100, -200);
+  // drawLine(10, 10, -100, -700);
+  // drawLine(10, 10, 500, -300);
+  // drawLine(10, 10, -100, 400);
   glEnd();
   glFlush();
 }
