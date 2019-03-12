@@ -9,7 +9,10 @@ void display() {
   glBegin(GL_POINTS);
   // drawLine(10, 10, 200, 100);
   std::vector<Point2> vp;
-
+  vp.push_back(Point2(10, 10));
+  vp.push_back(Point2(100, 100));
+  vp.push_back(Point2(50, 0));
+  fill(vp);
   glEnd();
   glFlush();
 }

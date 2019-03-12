@@ -70,7 +70,6 @@ void fill(const std::vector<Point2>& vp) {
       }
     }
   }
-
   std::list<ETNode> AET;
   for (int y = yMin; y <= yMax; y++) {
     std::list<ETNode>::iterator itNET = NET[y].begin(), itAET = AET.begin();
