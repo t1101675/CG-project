@@ -1,19 +1,15 @@
+#include <vector>
 #include <iostream>
+
 #include "utils.h"
 
 void display() {
   glClear(GL_COLOR_BUFFER_BIT);
   glColor3f(1.0, 1.0, 1.0);
   glBegin(GL_POINTS);
-  std::cout << "OK" << std::endl;
-  // glVertex2i(700, 15);
-  // glVertex2i(100, 555);
-  drawLine(10, 10, 200, 100);
-  // drawLine(10, 10, 200, 400);
-  // drawLine(10, 10, -100, -200);
-  // drawLine(10, 10, -100, -700);
-  // drawLine(10, 10, 500, -300);
-  // drawLine(10, 10, -100, 400);
+  // drawLine(10, 10, 200, 100);
+  std::vector<Point2> vp;
+
   glEnd();
   glFlush();
 }

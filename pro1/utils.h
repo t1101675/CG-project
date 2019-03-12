@@ -3,7 +3,7 @@
 
 struct Point2 {
   int x, y;
-  Point(int xx = 0, int yy = 0): x(xx), y(yy) {}
+  Point2(int xx = 0, int yy = 0): x(xx), y(yy) {}
 };
 
 struct ETNode {

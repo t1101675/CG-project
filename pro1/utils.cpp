@@ -1,5 +1,5 @@
 #include <list>
-#include <assert>
+#include <assert.h>
 #include <vector>
 #include <iostream>
 
@@ -54,7 +54,7 @@ void fill(const std::vector<Point2>& vp) {
         int prev = i > 0 ? i - 1 : vp.size();
         if (vp[prev].y > y) {
           int dy = vp[prev].y - vp[i].y;
-          NET.push_back(ETNode(vp[i].x * (dy ? dy : 1),
+          NET[y].push_back(ETNode(vp[i].x * (dy ? dy : 1),
                               (vp[prev].x - vp[i].x),
                               dy,
                               vp[prev].y));
@@ -62,7 +62,7 @@ void fill(const std::vector<Point2>& vp) {
         int post = i + 1 < vp.size() ? i + 1 : 0;
         if (vp[post].y > y) {
           int dy = vp[post].y - vp[i].y;
-          NET.push_back(ETNode(vp[i].x * (dy ? dy : 1),
+          NET[y].push_back(ETNode(vp[i].x * (dy ? dy : 1),
                               (vp[post].x - vp[i].x),
                               dy,
                               vp[post].y));
@@ -73,9 +73,9 @@ void fill(const std::vector<Point2>& vp) {
 
   std::list<ETNode> AET;
   for (int y = yMin; y <= yMax; y++) {
-    std::list<ETNode>::iterator itNET = NET.begin(), itAET = AET.begin();
-    for (; itNET != NET.end(); ++itNET) {
-      while (itAET != AET.end() && *itAET.x < *itNET.x) {
+    std::list<ETNode>::iterator itNET = NET[y].begin(), itAET = AET.begin();
+    for (; itNET != NET[y].end(); ++itNET) {
+      while (itAET != AET.end() && (*itAET).x < (*itNET).x) {
         itAET++;
       }
       AET.insert(itAET, *itNET);
@@ -85,11 +85,13 @@ void fill(const std::vector<Point2>& vp) {
 
     itAET = AET.begin();
     while (itAET != AET.end()) {
-      if (*itAET.y == 0) xMin = (*itAET).x;
-      int xMin = (*itAET).x / (*itAET).dy;
+      int xMin = 0;
+      if ((*itAET).dy == 0) xMin = (*itAET).x;
+      else xMin = (*itAET).x / (*itAET).dy;
       itAET++;
-      if (*itAET.y == 0) xMax = (*itAET).x;
-      int xMax = (*itAET).x / (*itAET).dy;
+      int xMax = 0;
+      if ((*itAET).dy == 0) xMax = (*itAET).x;
+      else xMax = (*itAET).x / (*itAET).dy;
       itAET++;
       for (int x = xMin; x <= xMax; x++) {
         glVertex2i(x, y);
