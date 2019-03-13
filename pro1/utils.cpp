@@ -1,44 +1,52 @@
 #include <list>
-#include <assert.h>
+#include <cmath>
 #include <vector>
+#include <assert.h>
 #include <iostream>
-
 
 #include "utils.h"
 
-inline int abs(int a) { return a > 0 ? a : -a; }
+const double PI = 3.14159265;
+const int N = 100;
+const double DEG_TO_PI = PI / 180.0;
+
+// inline int abs(int a) { return a > 0 ? a : -a; }
 
 void drawLine(int x1, int y1, int x2, int y2) {
+  glBegin(GL_POINTS);
   int dx = x2 - x1, dy = y2 - y1;
   int ux = dx > 0 ? 1 : -1, uy = dy > 0 ? 1 : -1;
   int dxAbs = abs(dx), dyAbs = abs(dy);
   int dxAbs2 = dxAbs << 1, dyAbs2 = dyAbs << 1;
   if (dxAbs > dyAbs) {
-    int e = 0;
-    for (int x = x1, y = y1; x != x2; x += ux) {
+    int e = -dxAbs;
+    for (int x = x1, y = y1; x != x2;) {
       glVertex2i(x, y);
       e += dyAbs2;
-      if (e > dxAbs) {
+      x += ux;
+      if (e >= 0) {
         y += uy;
         e -= dxAbs2;
       }
     }
   }
   else {
-    int e = 0;
+    int e = -dyAbs;
     for (int y = y1, x = x1; y != y2; y += uy) {
       glVertex2i(x, y);
       e += dxAbs2;
-      if (e > dyAbs) {
+      if (e >= 0) {
         x += ux;
         e -= dyAbs2;
       }
     }
   }
   glVertex2i(x2, y2);
+  glEnd();
 }
 
 void fill(const std::vector<Point2>& vp) {
+  glBegin(GL_POINTS);
   if (vp.size() <= 0) return;
   int yMin = 0x7fffffff;
   int yMax = yMin + 1;
@@ -124,5 +132,16 @@ void fill(const std::vector<Point2>& vp) {
       (*itAET).x += (*itAET).dx;
     }
   }
+  glEnd();
   delete[] NET;
+}
+
+void drawCircle(int x, int y, int r, int ang1, int ang2) {
+  glBegin(GL_LINE_STRIP);
+  double start = ang1 * DEG_TO_PI, end = ang2 * DEG_TO_PI;
+  double delta = (end - start) / N;
+  for (int i = 0; i <= N; i++) {
+    glVertex2i(x + int(r * cos(start + delta * i)), y + int(r * sin(start + delta * i)));
+  }
+  glEnd();
 }

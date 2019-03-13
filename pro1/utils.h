@@ -17,3 +17,5 @@ struct ETNode {
 void drawLine(int x1, int y1, int x2, int y2);
 
 void fill(const std::vector<Point2>& vp);
+
+void drawCircle(int x, int y, int r, int ang1, int ang2);
