@@ -48,28 +48,28 @@ void fill(const std::vector<Point2>& vp) {
   }
 
   std::list<ETNode>* NET = new std::list<ETNode>[yMax - yMin + 1];
-  for (int y = yMin; y <= yMax; y++) {
+  for (int y = yMin, k = 0; y <= yMax; y++, k++) {
     for (int i = 0; i < vp.size(); i++) {
       if (vp[i].y == y) {
         int prev = i > 0 ? i - 1 : (vp.size() - 1);
         if (vp[prev].y > y) {
           int dy = vp[prev].y - vp[i].y;
-          NET[y].push_back(ETNode((double)vp[i].x, dy ? (vp[prev].x - vp[i].x) / (double)dy : 0, vp[prev].y));
+          NET[k].push_back(ETNode((double)vp[i].x, dy ? (vp[prev].x - vp[i].x) / (double)dy : 0, vp[prev].y));
         }
         int post = (i + 1) < vp.size() ? i + 1 : 0;
         if (vp[post].y > y) {
           int dy = vp[post].y - vp[i].y;
-          NET[y].push_back(ETNode((double)vp[i].x, dy ? (vp[post].x - vp[i].x) / (double)dy : 0, vp[post].y));
+          NET[k].push_back(ETNode((double)vp[i].x, dy ? (vp[post].x - vp[i].x) / (double)dy : 0, vp[post].y));
         }
       }
     }
   }
 
-  for (int y = yMin; y <= yMax; y++) {
-    if (NET[y].size() > 0) {
-      std::list<ETNode>::iterator itNET = NET[y].begin();
+  for (int y = yMin, k = 0; y <= yMax; y++, k++) {
+    if (NET[k].size() > 0) {
+      std::list<ETNode>::iterator itNET = NET[k].begin();
       std::cout << "at y = " << y << std::endl;
-      while (itNET != NET[y].end()) {
+      while (itNET != NET[k].end()) {
         std::cout << "(" << (*itNET).x << ", " << (*itNET).dx << ", " << (*itNET).yMax << ")" << std::endl;
         ++itNET;
       }
@@ -77,8 +77,8 @@ void fill(const std::vector<Point2>& vp) {
   }
 
   std::list<ETNode> AET;
-  for (int y = yMin; y <= yMax; y++) {
-    std::list<ETNode>::iterator itNET = NET[y].begin(), itAET = AET.begin();
+  for (int y = yMin, k = 0; y <= yMax; y++, k++) {
+    std::list<ETNode>::iterator itNET = NET[k].begin(), itAET = AET.begin();
 
     /*delete edges y > yMax*/
     while (itAET != AET.end()) {
@@ -87,7 +87,7 @@ void fill(const std::vector<Point2>& vp) {
     }
 
     /*insert new edges*/
-    for (; itNET != NET[y].end(); ++itNET) {
+    for (; itNET != NET[k].end(); ++itNET) {
       itAET = AET.begin();
       while (itAET != AET.end()) {
         if ((*itAET).x < (*itNET).x) ++itAET;
