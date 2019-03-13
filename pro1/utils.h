@@ -7,12 +7,11 @@ struct Point2 {
 };
 
 struct ETNode {
-  int x;
-  int dx;
-  int dy;
+  double x;
+  double dx;
   int yMax;
 
-  ETNode(int xx = 0, int ddx = 0, int ddy = 0, int yyMax = 0): x(xx), dx(ddx), dy(ddy), yMax(yyMax) {}
+  ETNode(double xx = 0, double ddx = 0, int yyMax = 0): x(xx), dx(ddx), yMax(yyMax) {}
 };
 
 void drawLine(int x1, int y1, int x2, int y2);

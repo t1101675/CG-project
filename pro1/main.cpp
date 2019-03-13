@@ -7,7 +7,9 @@ void display() {
   glClear(GL_COLOR_BUFFER_BIT);
   glColor3f(1.0, 1.0, 1.0);
   glBegin(GL_POINTS);
-  // drawLine(10, 10, 200, 100);
+  drawLine(10, 10, 100, 100);
+  drawLine(10, 10, 50, 0);
+  drawLine(50, 0, 100, 100);
   std::vector<Point2> vp;
   vp.push_back(Point2(10, 10));
   vp.push_back(Point2(100, 100));
