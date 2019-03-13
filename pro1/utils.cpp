@@ -65,16 +65,16 @@ void fill(const std::vector<Point2>& vp) {
     }
   }
 
-  for (int y = yMin, k = 0; y <= yMax; y++, k++) {
-    if (NET[k].size() > 0) {
-      std::list<ETNode>::iterator itNET = NET[k].begin();
-      std::cout << "at y = " << y << std::endl;
-      while (itNET != NET[k].end()) {
-        std::cout << "(" << (*itNET).x << ", " << (*itNET).dx << ", " << (*itNET).yMax << ")" << std::endl;
-        ++itNET;
-      }
-    }
-  }
+  // for (int y = yMin, k = 0; y <= yMax; y++, k++) {
+  //   if (NET[k].size() > 0) {
+  //     std::list<ETNode>::iterator itNET = NET[k].begin();
+  //     std::cout << "at y = " << y << std::endl;
+  //     while (itNET != NET[k].end()) {
+  //       std::cout << "(" << (*itNET).x << ", " << (*itNET).dx << ", " << (*itNET).yMax << ")" << std::endl;
+  //       ++itNET;
+  //     }
+  //   }
+  // }
 
   std::list<ETNode> AET;
   for (int y = yMin, k = 0; y <= yMax; y++, k++) {
@@ -98,13 +98,13 @@ void fill(const std::vector<Point2>& vp) {
     }
     /*after insertion, number of nodes in AET should %2 = 0*/
 
-    std::list<ETNode>::iterator testIt = AET.begin();
-    std::cout << "y = " << y << std::endl;
-    while (testIt != AET.end()) {
-      std::cout << "(" << (*testIt).x << ", " << (*testIt).dx << ", " << (*testIt).yMax << ")" << std::endl;
-      ++testIt;
-    }
-    std::cout << std::endl;
+    // std::list<ETNode>::iterator testIt = AET.begin();
+    // std::cout << "y = " << y << std::endl;
+    // while (testIt != AET.end()) {
+    //   std::cout << "(" << (*testIt).x << ", " << (*testIt).dx << ", " << (*testIt).yMax << ")" << std::endl;
+    //   ++testIt;
+    // }
+    // std::cout << std::endl;
     assert(AET.size() % 2 == 0);
 
     /*draw vertex in a line*/
@@ -114,7 +114,6 @@ void fill(const std::vector<Point2>& vp) {
       itAET++;
       int xMax = (int)(*itAET).x;
       itAET++;
-      std::cout << xMin << " " << xMax << std::endl;
       for (int x = xMin; x <= xMax; x++) {
         glVertex2i(x, y);
       }

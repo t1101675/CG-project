@@ -11,12 +11,12 @@ void display() {
   // drawLine(100, 100, 500, 0);
   // drawLine(500, 0, 1000, 1000);
   std::vector<Point2> vp;
-  vp.push_back(Point2(200, 200));
-  vp.push_back(Point2(2000, 1400));
-  vp.push_back(Point2(2340, 200));
+  vp.push_back(Point2(1000, 1400));
+  vp.push_back(Point2(1000, 1400));
+  vp.push_back(Point2(1340, 200));
   vp.push_back(Point2(-356, -1567));
-  vp.push_back(Point2(-2336, -967));
-  vp.push_back(Point2(-2006, 1567));
+  vp.push_back(Point2(-1336, -967));
+  vp.push_back(Point2(-1006, 1567));
   // vp.push_back(Point2(-356, -1567));
   fill(vp);
   glEnd();
@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
   glutInitWindowSize(1000, 1000);
   glutCreateWindow("test");
   glMatrixMode(GL_PROJECTION);
-  gluOrtho2D(-3000, 3000, -3000, 3000);
+  gluOrtho2D(-2000, 2000, -2000, 2000);
   glutDisplayFunc(display);
   glutMainLoop();
   return 0;
