@@ -14,8 +14,24 @@ struct ETNode {
   ETNode(double xx = 0, double ddx = 0, int yyMax = 0): x(xx), dx(ddx), yMax(yyMax) {}
 };
 
-void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2);
+struct Color3 {
+  int r, g, b;
 
-void fill(cv::Mat &image, const std::vector<Point2>& vp);
+  Color3(int rr, int gg, int bb): r(rr), g(gg), b(bb) {}
+};
 
-void drawCircle(cv::Mat &image, int x, int y, int r, int ang1, int ang2);
+struct Color4{
+  int r, g, b, a;
+
+  Color4(int rr, int gg, int bb, int aa): r(rr), g(gg), b(bb), a(aa) {}
+};
+
+void drawPixel4(cv::Mat & image, int x, int y, int r, int g, int b);
+
+void drawPixel3(cv::Mat &image, int x, int y, int r, int g, int b, int a);
+
+void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2, const Color3 &c);
+
+void fill(cv::Mat &image, const std::vector<Point2>& vp, const Color3 &c);
+
+void drawCircle(cv::Mat &image, int x, int y, int r, int ang1, int ang2, const Color3 &c);

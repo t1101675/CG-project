@@ -12,7 +12,20 @@ const double DEG_TO_PI = PI / 180.0;
 
 // inline int abs(int a) { return a > 0 ? a : -a; }
 
-void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2) {
+void drawPixel3(cv::Mat &image, int x, int y, int r, int g, int b) {
+  image.at<cv::Vec3b>(x, y)[0] = r;
+  image.at<cv::Vec3b>(x, y)[1] = g;
+  image.at<cv::Vec3b>(x, y)[2] = b;
+}
+
+void drawPixel4(cv::Mat &image, int x, int y, int r, int g, int b, int a) {
+  image.at<cv::Vec4b>(x, y)[0] = r;
+  image.at<cv::Vec4b>(x, y)[1] = g;
+  image.at<cv::Vec4b>(x, y)[2] = b;
+  image.at<cv::Vec4b>(x, y)[3] = a;
+}
+
+void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2, const Color3 &c) {
   int dx = x2 - x1, dy = y2 - y1;
   int ux = dx > 0 ? 1 : -1, uy = dy > 0 ? 1 : -1;
   int dxAbs = abs(dx), dyAbs = abs(dy);
@@ -20,10 +33,7 @@ void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2) {
   if (dxAbs > dyAbs) {
     int e = -dxAbs;
     for (int x = x1, y = y1; x != x2;) {
-      image.at<cv::Vec3b>(x, y)[0] = 255;
-      image.at<cv::Vec3b>(x, y)[1] = 255;
-      image.at<cv::Vec3b>(x, y)[2] = 255;
-
+      drawPixel3(image, x, y, c.b, c.g, c.r);
       e += dyAbs2;
       x += ux;
       if (e >= 0) {
@@ -35,10 +45,7 @@ void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2) {
   else {
     int e = -dyAbs;
     for (int y = y1, x = x1; y != y2; y += uy) {
-      image.at<cv::Vec3b>(x, y)[0] = 255;
-      image.at<cv::Vec3b>(x, y)[1] = 255;
-      image.at<cv::Vec3b>(x, y)[2] = 255;
-
+      drawPixel3(image, x, y, c.b, c.g, c.r);
       e += dxAbs2;
       if (e >= 0) {
         x += ux;
@@ -46,12 +53,10 @@ void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2) {
       }
     }
   }
-  image.at<cv::Vec3b>(x2, y2)[0] = 255;
-  image.at<cv::Vec3b>(x2, y2)[1] = 255;
-  image.at<cv::Vec3b>(x2, y2)[2] = 255;
+  drawPixel3(image, x2, y2, c.b, c.g, c.r);
 }
 
-void fill(cv::Mat &image, const std::vector<Point2>& vp) {
+void fill(cv::Mat &image, const std::vector<Point2>& vp, const Color3 &c) {
   if (vp.size() <= 0) return;
   int yMin = 0x7fffffff;
   int yMax = yMin + 1;
@@ -128,9 +133,7 @@ void fill(cv::Mat &image, const std::vector<Point2>& vp) {
       int xMax = (int)(*itAET).x;
       itAET++;
       for (int x = xMin; x <= xMax; x++) {
-        image.at<cv::Vec3b>(x, y)[0] = 255;
-        image.at<cv::Vec3b>(x, y)[1] = 255;
-        image.at<cv::Vec3b>(x, y)[2] = 255;
+        drawPixel3(image, x, y, c.b, c.g, c.r);
       }
     }
 
@@ -142,11 +145,11 @@ void fill(cv::Mat &image, const std::vector<Point2>& vp) {
   delete[] NET;
 }
 
-void drawCircle(cv::Mat &image, int x, int y, int r, int ang1, int ang2) {
+void drawCircle(cv::Mat &image, int x, int y, int r, int ang1, int ang2, const Color3 &c) {
   double start = ang1 * DEG_TO_PI, end = ang2 * DEG_TO_PI;
   double delta = (end - start) / N;
   for (int i = 0; i < N; i++) {
     drawLine(image, x + int(r * cos(start + delta * i)),       y + int(r * sin(start + delta * i)),
-             x + int(r * cos(start + delta * (i + 1))), y + int(r * sin(start + delta * (i + 1))));
+             x + int(r * cos(start + delta * (i + 1))), y + int(r * sin(start + delta * (i + 1))), c);
   }
 }
