@@ -12,8 +12,7 @@ const double DEG_TO_PI = PI / 180.0;
 
 // inline int abs(int a) { return a > 0 ? a : -a; }
 
-void drawLine(int x1, int y1, int x2, int y2) {
-  glBegin(GL_POINTS);
+void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2) {
   int dx = x2 - x1, dy = y2 - y1;
   int ux = dx > 0 ? 1 : -1, uy = dy > 0 ? 1 : -1;
   int dxAbs = abs(dx), dyAbs = abs(dy);
@@ -21,7 +20,10 @@ void drawLine(int x1, int y1, int x2, int y2) {
   if (dxAbs > dyAbs) {
     int e = -dxAbs;
     for (int x = x1, y = y1; x != x2;) {
-      glVertex2i(x, y);
+      image.at<cv::Vec3b>(x, y)[0] = 255;
+      image.at<cv::Vec3b>(x, y)[1] = 255;
+      image.at<cv::Vec3b>(x, y)[2] = 255;
+
       e += dyAbs2;
       x += ux;
       if (e >= 0) {
@@ -33,7 +35,10 @@ void drawLine(int x1, int y1, int x2, int y2) {
   else {
     int e = -dyAbs;
     for (int y = y1, x = x1; y != y2; y += uy) {
-      glVertex2i(x, y);
+      image.at<cv::Vec3b>(x, y)[0] = 255;
+      image.at<cv::Vec3b>(x, y)[1] = 255;
+      image.at<cv::Vec3b>(x, y)[2] = 255;
+
       e += dxAbs2;
       if (e >= 0) {
         x += ux;
@@ -41,12 +46,12 @@ void drawLine(int x1, int y1, int x2, int y2) {
       }
     }
   }
-  glVertex2i(x2, y2);
-  glEnd();
+  image.at<cv::Vec3b>(x2, y2)[0] = 255;
+  image.at<cv::Vec3b>(x2, y2)[1] = 255;
+  image.at<cv::Vec3b>(x2, y2)[2] = 255;
 }
 
-void fill(const std::vector<Point2>& vp) {
-  glBegin(GL_POINTS);
+void fill(cv::Mat &image, const std::vector<Point2>& vp) {
   if (vp.size() <= 0) return;
   int yMin = 0x7fffffff;
   int yMax = yMin + 1;
@@ -123,7 +128,9 @@ void fill(const std::vector<Point2>& vp) {
       int xMax = (int)(*itAET).x;
       itAET++;
       for (int x = xMin; x <= xMax; x++) {
-        glVertex2i(x, y);
+        image.at<cv::Vec3b>(x, y)[0] = 255;
+        image.at<cv::Vec3b>(x, y)[1] = 255;
+        image.at<cv::Vec3b>(x, y)[2] = 255;
       }
     }
 
@@ -132,16 +139,14 @@ void fill(const std::vector<Point2>& vp) {
       (*itAET).x += (*itAET).dx;
     }
   }
-  glEnd();
   delete[] NET;
 }
 
-void drawCircle(int x, int y, int r, int ang1, int ang2) {
-  glBegin(GL_LINE_STRIP);
+void drawCircle(cv::Mat &image, int x, int y, int r, int ang1, int ang2) {
   double start = ang1 * DEG_TO_PI, end = ang2 * DEG_TO_PI;
   double delta = (end - start) / N;
-  for (int i = 0; i <= N; i++) {
-    glVertex2i(x + int(r * cos(start + delta * i)), y + int(r * sin(start + delta * i)));
+  for (int i = 0; i < N; i++) {
+    drawLine(image, x + int(r * cos(start + delta * i)),       y + int(r * sin(start + delta * i)),
+             x + int(r * cos(start + delta * (i + 1))), y + int(r * sin(start + delta * (i + 1))));
   }
-  glEnd();
 }

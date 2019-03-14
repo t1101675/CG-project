@@ -1,20 +1,12 @@
+#include <opencv2/opencv.hpp>
 #include <iostream>
-#include <list>
 
 int main() {
-	std::list<int> L;
-	for (int i = 0; i < 100; i++) {
-		L.push_back(i);
-	}
-	std::list<int>::iterator it = L.begin();
-	for (; it != L.end(); it++) {
-		if ((*it) % 10 == 0) {
-			L.erase(it);
-		}
-	}
-	for (it = L.begin(); it != L.end(); it++) {
-		std::cout << *it << " ";
-	}
-				
+	cv::Mat image = cv::imread("hello.png");
+	cv::namedWindow("test image");
+	cv::imshow("test image", image);
+	cv::waitKey(0);
 	return 0;
+
 }
+
