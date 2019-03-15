@@ -13,16 +13,15 @@ const double DEG_TO_PI = PI / 180.0;
 // inline int abs(int a) { return a > 0 ? a : -a; }
 
 void drawPixel3(cv::Mat &image, int x, int y, int r, int g, int b) {
-  image.at<cv::Vec3b>(x, y)[0] = r;
+  image.at<cv::Vec3b>(x, y)[0] = b;
   image.at<cv::Vec3b>(x, y)[1] = g;
-  image.at<cv::Vec3b>(x, y)[2] = b;
+  image.at<cv::Vec3b>(x, y)[2] = r;
 }
 
-void drawPixel4(cv::Mat &image, int x, int y, int r, int g, int b, int a) {
-  image.at<cv::Vec4b>(x, y)[0] = r;
-  image.at<cv::Vec4b>(x, y)[1] = g;
-  image.at<cv::Vec4b>(x, y)[2] = b;
-  image.at<cv::Vec4b>(x, y)[3] = a;
+void drawPixel4(cv::Mat &image, int x, int y, int r, int g, int b, double a) {
+  image.at<cv::Vec3b>(x, y)[0] = 255 - int((255 - b) * a);
+  image.at<cv::Vec3b>(x, y)[1] = 255 - int((255 - g) * a);
+  image.at<cv::Vec3b>(x, y)[2] = 255 - int((255 - r) * a);
 }
 
 void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2, const Color3 &c) {
@@ -33,19 +32,9 @@ void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2, const Color3 &c) {
   if (dxAbs > dyAbs) {
     int e = 0;
     for (int x = x1, y = y1; x != x2; x += ux) {
-      double a = double(e) / dxAbs2;
-      if (e > 0) {
-        drawPixel3(image, x, y, int(c.b * (1 - a)), int(c.g * (1 - a)), int(c.r * (1 - a)));
-        // drawPixel3(image, x, y + uy, int(c.b * a), int(c.g * a), int(c.r * a));
-        // drawPixel4(image, x, y, c.b, c.g, c.r, int(255 * (1 - double(e) / dxAbs2)));
-        // drawPixel4(image, x, y + uy, c.b, c.g, c.r, int(255 * double(e) / dxAbs2));
-      }
-      else {
-        drawPixel3(image, x, y, int(c.b * (1 + a)), int(c.g * (1 + a)), int(c.r * (1 + a)));
-        // drawPixel3(image, x, y - uy, -int(c.b * a), -int(c.g * a), -int(c.r * a));
-        // drawPixel4(image, x, y, c.b, c.g, c.r, int(255 * (1 + double(e) / dxAbs2)));
-        // drawPixel4(image, x, y - uy, c.b, c.g, c.r, int(255 * double(-e) / dxAbs2));
-      }
+      double a = double(abs(e)) / dxAbs2;
+      drawPixel4(image, x, y, c.r, c.g, c.b, 1 - a);
+      drawPixel4(image, x, y + (e > 0 ? uy : -uy), c.r, c.g, c.b, a);
       e += dyAbs2;
       if (e >= dxAbs) {
         y += uy;
@@ -56,21 +45,9 @@ void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2, const Color3 &c) {
   else {
     int e = 0;
     for (int y = y1, x = x1; y != y2; y += uy) {
-      double a = double(e) / dyAbs2;
-      if (e > 0) {
-        drawPixel3(image, x, y, int(c.b * (1 - a)), int(c.g * (1 - a)), int(c.r * (1 - a)));
-        // drawPixel3(image, x + ux, y, int(c.b * a), int(c.g * a), int(c.r * a));
-        // drawPixel4(image, x, y, c.b, c.g, c.r, int(255 * (1 - double(e) / dxAbs2)));
-        // drawPixel4(image, x + ux, y, c.b, c.g, c.r, int(255 * double(e) / dxAbs2));
-      }
-      else {
-        drawPixel3(image, x, y, int(c.b * (1 + a)), int(c.g * (1 + a)), int(c.r * (1 + a)));
-        // drawPixel3(image, x - ux, y, -int(c.b * a), -int(c.g * a), -int(c.r * a));
-        // drawPixel4(image, x, y, c.b, c.g, c.r, int(255 * (1 + double(e) / dxAbs2)));
-        // drawPixel4(image, x - ux, y, c.b, c.g, c.r, int(255 * double(-e) / dxAbs2));
-      }
-      drawPixel3(image, x, y, c.b, c.g, c.r);
-
+      double a = double(abs(e)) / dyAbs2;
+      drawPixel4(image, x, y, c.r, c.g, c.b, 1 - a);
+      drawPixel4(image, x - (e > 0 ? uy : -uy), y, c.r, c.g, c.b, a);
       e += dxAbs2;
       if (e >= dyAbs) {
         x += ux;

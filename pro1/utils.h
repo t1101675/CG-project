@@ -26,6 +26,7 @@ struct Color4{
   Color4(int rr, int gg, int bb, int aa): r(rr), g(gg), b(bb), a(aa) {}
 };
 
+
 void drawPixel4(cv::Mat & image, int x, int y, int r, int g, int b);
 
 void drawPixel3(cv::Mat &image, int x, int y, int r, int g, int b, int a);

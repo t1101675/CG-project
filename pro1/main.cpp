@@ -4,8 +4,9 @@
 #include "utils.h"
 
 int main(int argc, char** argv) {
-  cv::Mat image(2560, 1440, CV_8UC3, cv::Scalar(0, 0, 0));
-  Color3 c(255, 255, 255);
+  cv::Mat image(2560, 1440, CV_8UC3, cv::Scalar(255, 255, 255));
+  Color3 c(0, 0, 0);
+  // drawLine(image, 1000, 1000, 1120, 1020, c);
   /*hat*/
   drawLine(image, 800, 1280, 1130, 1335, c);
   drawLine(image, 800, 1280, 863, 900, c);
