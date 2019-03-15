@@ -31,23 +31,48 @@ void drawLine(cv::Mat &image, int x1, int y1, int x2, int y2, const Color3 &c) {
   int dxAbs = abs(dx), dyAbs = abs(dy);
   int dxAbs2 = dxAbs << 1, dyAbs2 = dyAbs << 1;
   if (dxAbs > dyAbs) {
-    int e = -dxAbs;
-    for (int x = x1, y = y1; x != x2;) {
-      drawPixel3(image, x, y, c.b, c.g, c.r);
+    int e = 0;
+    for (int x = x1, y = y1; x != x2; x += ux) {
+      double a = double(e) / dxAbs2;
+      if (e > 0) {
+        drawPixel3(image, x, y, int(c.b * (1 - a)), int(c.g * (1 - a)), int(c.r * (1 - a)));
+        // drawPixel3(image, x, y + uy, int(c.b * a), int(c.g * a), int(c.r * a));
+        // drawPixel4(image, x, y, c.b, c.g, c.r, int(255 * (1 - double(e) / dxAbs2)));
+        // drawPixel4(image, x, y + uy, c.b, c.g, c.r, int(255 * double(e) / dxAbs2));
+      }
+      else {
+        drawPixel3(image, x, y, int(c.b * (1 + a)), int(c.g * (1 + a)), int(c.r * (1 + a)));
+        // drawPixel3(image, x, y - uy, -int(c.b * a), -int(c.g * a), -int(c.r * a));
+        // drawPixel4(image, x, y, c.b, c.g, c.r, int(255 * (1 + double(e) / dxAbs2)));
+        // drawPixel4(image, x, y - uy, c.b, c.g, c.r, int(255 * double(-e) / dxAbs2));
+      }
       e += dyAbs2;
-      x += ux;
-      if (e >= 0) {
+      if (e >= dxAbs) {
         y += uy;
         e -= dxAbs2;
       }
     }
   }
   else {
-    int e = -dyAbs;
+    int e = 0;
     for (int y = y1, x = x1; y != y2; y += uy) {
+      double a = double(e) / dyAbs2;
+      if (e > 0) {
+        drawPixel3(image, x, y, int(c.b * (1 - a)), int(c.g * (1 - a)), int(c.r * (1 - a)));
+        // drawPixel3(image, x + ux, y, int(c.b * a), int(c.g * a), int(c.r * a));
+        // drawPixel4(image, x, y, c.b, c.g, c.r, int(255 * (1 - double(e) / dxAbs2)));
+        // drawPixel4(image, x + ux, y, c.b, c.g, c.r, int(255 * double(e) / dxAbs2));
+      }
+      else {
+        drawPixel3(image, x, y, int(c.b * (1 + a)), int(c.g * (1 + a)), int(c.r * (1 + a)));
+        // drawPixel3(image, x - ux, y, -int(c.b * a), -int(c.g * a), -int(c.r * a));
+        // drawPixel4(image, x, y, c.b, c.g, c.r, int(255 * (1 + double(e) / dxAbs2)));
+        // drawPixel4(image, x - ux, y, c.b, c.g, c.r, int(255 * double(-e) / dxAbs2));
+      }
       drawPixel3(image, x, y, c.b, c.g, c.r);
+
       e += dxAbs2;
-      if (e >= 0) {
+      if (e >= dyAbs) {
         x += ux;
         e -= dyAbs2;
       }
